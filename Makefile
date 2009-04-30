@@ -3,14 +3,14 @@ CXX= g++
 CXXFLAGS= -O2 -W -Wall -ansi -pedantic
 OBJS= chip_ocho.o memory.o
 PROGRAM= chip_ocho
-TESTS= memory.o tests/lemon.o tests/all_tests.o
+TESTS= memory.o tests/all_tests.o tests/lemon.o
 TESTPRG= chip_ocho_tests
 
 all: $(OBJS)
 	@$(CXX) -o $(PROGRAM) $(OBJS)
 	@echo "Compilation complete, executable file is './chip_ocho'"
 	
-tests: $(TESTS) $(OBJS)
+tests: $(TESTS)
 	@$(CXX) -o $(TESTPRG) $(TESTS)
 	@echo "Compiling tests complete, executable file is './chip_ocho_tests'"
 	

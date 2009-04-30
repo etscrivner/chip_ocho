@@ -50,8 +50,20 @@ public:
 	// they are equal the test passes, otherwise it fails.
 	template<typename type_t>
 	bool is(const type_t& this_one, 
-			const type_t& that_one,
-			const std::string& test_name);
+				const type_t& that_one,
+				const std::string& test_name)
+	{
+		bool passed = (this_one == that_one);
+
+		ok(passed, test_name);
+
+		if (!passed) {
+			std::cout << "#         got: '" << this_one << "'\n";
+			std::cout << "#    expected: '" << that_one << "'\n";
+		}
+
+		return passed;
+	}
 			
 	// Function: isnt
 	//
@@ -64,8 +76,21 @@ public:
 	// they are not equal the test passes, otherwise the test fails.
 	template<typename type_t>
 	bool isnt(const type_t& this_one,
-	          const type_t& that_one,
-		      const std::string& test_name);
+				const type_t& that_one,
+				const std::string& test_name)
+	{
+		bool passed = (this_one != that_one);
+
+		ok (passed, test_name);
+
+		if (!passed) {
+			std::cout << "#    '" << this_one << "'\n";
+			std::cout << "#      !=\n";
+			std::cout << "#    '" << that_one << "'\n";
+		}
+
+		return passed;
+	}
 		
 	// Function: pass
 	//
