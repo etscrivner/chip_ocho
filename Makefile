@@ -1,16 +1,22 @@
 # chip_ocho Makefile
-CXX	= g++
+CXX= g++
 CXXFLAGS= -O2 -W -Wall -ansi -pedantic
-OBJS = chip_ocho.o memory.o
-PROGRAM = chip_ocho
+OBJS= chip_ocho.o memory.o
+PROGRAM= chip_ocho
+TESTS= memory.o tests/lemon.o tests/all_tests.o
+TESTPRG= chip_ocho_tests
 
 all: $(OBJS)
-	@$(CXX) -o $(PROGRAM) $(OBJS) $(TESTS)
+	@$(CXX) -o $(PROGRAM) $(OBJS)
 	@echo "Compilation complete, executable file is './chip_ocho'"
+	
+tests: $(TESTS) $(OBJS)
+	@$(CXX) -o $(TESTPRG) $(TESTS)
+	@echo "Compiling tests complete, executable file is './chip_ocho_tests'"
 	
 %.o: %.cpp %.h
 	@echo "Compiling $<"
-	@$(CXX) $(CXXFLAGS) -c $<
+	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f *~ *.o tests/*.o
+	rm -f *~ chip_ocho *.o tests/*.o
