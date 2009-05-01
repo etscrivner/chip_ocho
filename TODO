@@ -1,0 +1,4 @@
+April 30, 2009:
+================
+* Add functions for reading 16-bits (unsigned short) from memory
+* Add functions for writing 16-bits (unsigned short) to memory
