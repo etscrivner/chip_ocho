@@ -18,7 +18,7 @@ public:
 	//    address - The byte address in memory
 	//
 	// Returns the value at the given address in memory
-	const char& read(const unsigned int& address) const;
+	const char& read (const unsigned int& address) const;
 	
 	// Function: write
 	//
@@ -27,7 +27,7 @@ public:
 	//    value - The value to be written
 	//
 	// Writes the given value at the given address in memory
-	void write(const unsigned int& address, char value);
+	void write (const unsigned int& address, char value);
 	
 	// Function: load
 	//
@@ -36,7 +36,7 @@ public:
 	//
 	// Loads the given file into memory at the offset CHIP_OCHO_LOAD_OFFSET.
 	// Returns true if the file was loaded into memory, false otherwise.
-	bool load(const std::string& file_name);
+	bool load (const std::string& file_name);
 private:
 	char memory[CHIP_OCHO_MEMORY_SIZE]; // The memory
 };

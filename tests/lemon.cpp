@@ -67,6 +67,12 @@ bool lemon_t::ok(bool passed, const std::string& test_name) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+bool lemon_t::not_ok(bool failed, const std::string& test_name) {
+	return ok(!failed, test_name);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 bool lemon_t::pass(const std::string& test_name) {
 	return ok(true, test_name);
 }
