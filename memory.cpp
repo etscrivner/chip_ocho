@@ -29,12 +29,28 @@ void memory_t::write(const unsigned int& address, char value) {
 ///////////////////////////////////////////////////////////////////////////////
 
 bool memory_t::load(const std::string& file_name) {
+	// Attempt to open the ROM file
 	std::ifstream rom(file_name.c_str());
 	
-	if(!rom.is_open())
+	// If the ROM file could not be opened
+	if(!rom.good() || rom.eof() || !rom.is_open()) {
+		// Leave this method indicating an error ocurred
 		return false;
-		
-	rom.read(&memory[CHIP_LOAD_OFFSET],
-			sizeof(memory[0]) * (CHIP_OCHO_MEMORY_SIZE - CHIP_LOAD_OFFSET));
+	}
+	
+	// Determine the size of the file
+	rom.seekg(0, std::ios_base::beg);
+	std::ifstream::pos_type begin = rom.tellg();
+	rom.seekg(0, std::ios_base::end);
+	std::streamsize rom_size = static_cast<std::streamsize>(rom.tellg() - begin);
+	
+	// Use this to compute the number of bytes to be read
+	std::streamsize amount_to_read = std::max(MAX_CHIP_PROGRAM_SIZE, (unsigned int)rom_size);
+	
+	// Go to begining of file and read the ROM data into the memory at CHIP_LOAD_OFFSET
+	rom.seekg(0, std::ios_base::beg);
+	rom.read(&memory[CHIP_LOAD_OFFSET], amount_to_read);
+	rom.close();
+	
 	return true;
 }
