@@ -5,6 +5,8 @@ OBJS= chip_ocho.o memory.o
 PROGRAM= chip_ocho
 TESTS= memory.o tests/all_tests.o tests/lemon.o
 TESTPRG= chip_ocho_tests
+DISASM= memory.o disassembler/chip_disasm.o
+DISASMPRG= chip_disasm
 
 all: $(OBJS)
 	@$(CXX) -o $(PROGRAM) $(OBJS)
@@ -14,9 +16,13 @@ tests: $(TESTS)
 	@$(CXX) -o $(TESTPRG) $(TESTS)
 	@echo "Compiling tests complete, executable file is './chip_ocho_tests'"
 	
+disasm: $(DISASM)
+	@$(CXX) -o $(DISASMPRG) $(DISASM)
+	@echo "Compiling disassembler complete, executable file is './chip_disasm'"
+	
 %.o: %.cpp %.h
 	@echo "Compiling $<"
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f *~ chip_ocho *.o tests/*.o
+	rm -f *~ chip_ocho chip_ocho_tests chip_disasm *.o tests/*.o

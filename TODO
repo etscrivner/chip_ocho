@@ -1,4 +1,8 @@
-April 30, 2009:
-================
+May 1, 2009:
+=============
 * Add functions for reading 16-bits (unsigned short) from memory
 * Add functions for writing 16-bits (unsigned short) to memory
+* Implement a class called bus_t to act as a bus between different emulated
+  hardware components.
+* Implement a class called chip_t which uses the bus to read opcodes from
+  memory_t and sends them to cpu_t to be executed.

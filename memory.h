@@ -1,8 +1,9 @@
 #ifndef MEMORY_H_KRVI8REV
 #define MEMORY_H_KRVI8REV
 
-#include "constants.h"
 #include <string>
+#include "types.h"
+#include "constants.h"
 
 class memory_t
 {
@@ -18,7 +19,16 @@ public:
 	//    address - The byte address in memory
 	//
 	// Returns the value at the given address in memory
-	const char& read (const unsigned int& address) const;
+	const byte& read (const two_bytes& address) const;
+	
+	// Function: read_two_bytes
+	//
+	// Parameters:
+	//    address - The byte address in memory
+	//
+	// Returns a two byte value whose uppermost byte is at
+	// address at whose lower byte is at address + 1.
+	const two_bytes& read_two_bytes(const two_bytes& address) const;
 	
 	// Function: write
 	//
@@ -27,7 +37,7 @@ public:
 	//    value - The value to be written
 	//
 	// Writes the given value at the given address in memory
-	void write (const unsigned int& address, char value);
+	void write (const two_bytes& address, byte value);
 	
 	// Function: load
 	//
@@ -38,7 +48,7 @@ public:
 	// Returns true if the file was loaded into memory, false otherwise.
 	bool load (const std::string& file_name);
 private:
-	char memory[CHIP_OCHO_MEMORY_SIZE]; // The memory
+	byte memory[CHIP_OCHO_MEMORY_SIZE]; // The memory
 };
 
 #endif /* end of include guard: MEMORY_H_KRVI8REV */

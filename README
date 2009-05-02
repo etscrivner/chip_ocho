@@ -1,1 +1,36 @@
-ChipOcho - A CHIP-8 emulator written in C++.
+ChipOcho - A simple CHIP-8 emulator which can be compiled on Mac OS X, Windows
+and Linux.
+
+Goal: To create a simple CHIP-8 emulator which can load and execute CHIP-8 ROMs.
+
+Compiling
+----------
+To compile ChipOcho merely download the source code in the command-line type
+'make all', a successful build looks something like this:
+
+  $ make all
+	.
+	.
+	.
+	Compilation complete, executable file is './chip_ocho'
+	
+If successful this command will output an executable in the same directory as
+the Makefile called 'chip_ocho'.
+
+Compiling Unit Tests
+---------------------
+
+If you would like to also compile to the unit tests for ChipOcho you can type
+'make tests' in the command-line, a successful build looks something like this:
+
+	$ make tests
+	.
+	.
+	.
+	Compiling tests complete, executable file is './chip_ocho_tests'
+	
+If successful this command will output an executable in the same directory as
+the Makefile called 'chip_ocho_tests'.
+
+
+
