@@ -3,7 +3,7 @@
 using namespace std;
 
 int main (int, char const **) {
-	cout << "Chip-Ocho es libre." << endl;
+  cout << "Chip-Ocho es libre." << endl;
 	
-	return 0;
+  return 0;
 }

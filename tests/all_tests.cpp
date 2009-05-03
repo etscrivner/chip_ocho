@@ -3,11 +3,11 @@
 using namespace std;
 
 int main(int, const char**) {
-	// Run all the available test suites
-	cout << "[Memory Test Suite]" << endl;
-	memory_test_suite();
+  // Run all the available test suites
+  cout << "[Memory Test Suite]" << endl;
+  memory_test_suite();
+  
+  cout << endl;
 	
-	cout << endl;
-	
-	return 0;
+  return 0;
 }
