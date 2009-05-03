@@ -18,6 +18,7 @@ using namespace std;
 #define N (instruction & 0xF)
 #define NN "0x" << HEX(2) << (instruction & 0xFF)
 #define INSTR HEX(4) << instruction
+#define LITTLE_TO_BIG_ENDIAN(x) ((((x) >> 8) & 0xFF) | (((x) & 0xFF) << 8))
 
 // Function: print_usage
 //
@@ -207,7 +208,7 @@ int main (int argc, char const *argv[]) {
 	// Use this to compute the number of bytes to be read
 	streamsize amount_to_read = min(MAX_CHIP_PROGRAM_SIZE, rom_size);
 	
-	// Go to beginning of file and read the ROM data into the memory at CHIP_LOAD_OFFSET
+	// Go to beginning of file and read the ROM data into the memory
 	rom.seekg(0, ios_base::beg);
 	rom.read((char*)memory, amount_to_read);
 	rom.close();
@@ -218,7 +219,7 @@ int main (int argc, char const *argv[]) {
 	
 	for (streamsize pc = 0; pc < amount_to_read; pc += 2) {
 		opcode = *((unsigned short*)&memory[pc]);
-		opcode = (opcode >> 8) | (opcode << 8);
+		opcode = LITTLE_TO_BIG_ENDIAN(opcode);
 		out << setw(3) << setfill('0') << hex << uppercase << pc << ": ";
 		out << "[" << HEX(4) << opcode << "] ";
 		out << get_disassembled(opcode) << endl;

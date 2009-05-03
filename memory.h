@@ -5,6 +5,12 @@
 #include "types.h"
 #include "constants.h"
 
+#ifdef LITTLE_ENDIAN
+	#define SWAP_ENDIAN(x) ((((x) >> 8) & 0xFF) | (((x) & 0xFF) << 8))
+#else
+	#define SWAP_ENDIAN(x) (x)
+#endif
+
 class memory_t
 {
 public:
@@ -28,7 +34,7 @@ public:
 	//
 	// Returns a two byte value whose uppermost byte is at
 	// address at whose lower byte is at address + 1.
-	const two_bytes& read_two_bytes(const two_bytes& address) const;
+	const two_bytes read_two_bytes(const two_bytes& address) const;
 	
 	// Function: write
 	//

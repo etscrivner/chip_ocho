@@ -54,8 +54,8 @@ void memory_test_suite() {
 				"Memory loads data at the right offset.");
 				
 		// Test 8: You can read two bytes from memory at once
-		memory.write(0x300, 0xEF); // My Intel is little-endian
-		memory.write(0x301, 0xBE);
+		memory.write(0x300, 0xBE); // My Intel is little-endian
+		memory.write(0x301, 0xEF);
 		lemon.is<two_bytes>(memory.read_two_bytes(0x300), 0xBEEF,
 							"You can read two bytes from memory.");	
 				

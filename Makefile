@@ -7,17 +7,18 @@ TESTS= memory.o tests/all_tests.o tests/lemon.o
 TESTPRG= chip_ocho_tests
 DISASM= memory.o disassembler/chip_disasm.o
 DISASMPRG= chip_disasm
+ENDIANESS= LITTLE_ENDIAN
 
 all: $(OBJS)
-	@$(CXX) -o $(PROGRAM) $(OBJS)
+	@$(CXX) -D$(ENDIANESS) -o $(PROGRAM) $(OBJS)
 	@echo "Compilation complete, executable file is './chip_ocho'"
 	
 tests: $(TESTS)
-	@$(CXX) -o $(TESTPRG) $(TESTS)
+	@$(CXX) -D$(ENDIANESS) -o $(TESTPRG) $(TESTS)
 	@echo "Compiling tests complete, executable file is './chip_ocho_tests'"
 	
 disasm: $(DISASM)
-	@$(CXX) -o $(DISASMPRG) $(DISASM)
+	@$(CXX) -D$(ENDIANESS) -o $(DISASMPRG) $(DISASM)
 	@echo "Compiling disassembler complete, executable file is './chip_disasm'"
 	
 %.o: %.cpp %.h

@@ -19,12 +19,12 @@ const byte& memory_t::read(const two_bytes& address) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-const two_bytes& memory_t::read_two_bytes(const two_bytes& address) const {
+const two_bytes memory_t::read_two_bytes(const two_bytes& address) const {
 	if (address >= (CHIP_OCHO_MEMORY_SIZE - 1)) {
 		throw memory_exception_t(OUT_OF_BOUNDS_READ, address);
 	}
 	
-	return *((two_bytes*)&memory[address]);
+	return SWAP_ENDIAN(*((two_bytes*)&memory[address]));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
