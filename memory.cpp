@@ -1,6 +1,7 @@
 #include "memory.h"
 #include "exceptions.h"
 #include <fstream>
+#include <memory.h>
 using namespace std;
 
 memory_t::memory_t () {
