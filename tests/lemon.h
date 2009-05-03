@@ -60,8 +60,8 @@ public:
 	// they are equal the test passes, otherwise it fails.
 	template<typename type_t>
 	bool is (const type_t& this_one,
-				const type_t& that_one,
-				const std::string& test_name)
+		 const type_t& that_one,
+		 const std::string& test_name)
 	{
 		bool passed = (this_one == that_one);
 
@@ -86,8 +86,8 @@ public:
 	// they are not equal the test passes, otherwise the test fails.
 	template<typename type_t>
 	bool isnt (const type_t& this_one,
-				const type_t& that_one,
-				const std::string& test_name)
+		   const type_t& that_one,
+		   const std::string& test_name)
 	{
 		bool passed = (this_one != that_one);
 

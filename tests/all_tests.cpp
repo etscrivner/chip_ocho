@@ -9,5 +9,5 @@ int main(int, const char**) {
 	
 	cout << endl;
 	
-	return EXIT_SUCCESS;
+	return 0;
 }

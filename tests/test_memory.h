@@ -21,7 +21,7 @@ void memory_test_suite() {
 	
 		// Test 2: Memory can be written to and read from
 		memory.write(0x100, 0xBE);
-		lemon.is<char>(0xBE, memory.read(0x100),
+		lemon.is<unsigned char>(0xBE, memory.read(0x100),
 					"You can read and write to memory.");
 	
 		// Test 3: Memory won't let you read out of bounds
