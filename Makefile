@@ -1,9 +1,9 @@
 # chip_ocho Makefile
 #
-# Time-stamp: <Last modified 2009-12-05 18:50:56 by Eric Scrivner>
+# Time-stamp: <Last modified 2009-12-06 12:08:07 by Eric Scrivner>
 CXX= g++
 CXXFLAGS= -O2 -W -Wall -ansi -pedantic
-OBJS= chip_ocho.o memory.o
+OBJS= chip_ocho.o memory.o video.o cpu.o
 PROGRAM= chip_ocho
 
 # Unit tests

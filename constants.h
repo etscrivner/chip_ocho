@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-05 16:15:10 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 12:09:39 by Eric Scrivner>
 //
 // Description:
 //   Constants which are referenced throughout the emulator.
@@ -21,8 +21,13 @@ namespace Ocho {
 
   //////////////////////////////////////////////////////////////////////////////
   // CPU constants
-  const unsigned int NUM_REGS   = 0x0F; // The number of CPU registers
-  const unsigned int STACK_SIZE = 0x30; // Maximum call stack depth
+  const unsigned int NUM_REGS    = 0x0F; // The number of CPU registers
+  const unsigned int STACK_DEPTH = 0x30; // Maximum call stack depth
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Video constants
+  const unsigned int VIDEO_WIDTH  = 64; // The width of the video screen
+  const unsigned int VIDEO_HEIGHT = 32; // The height of the video screen
 }
 
 #endif // CONSTANTS_H__

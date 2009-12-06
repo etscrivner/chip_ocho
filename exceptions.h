@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-05 17:07:14 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 12:07:44 by Eric Scrivner>
 //
 // Description:
 //   Exceptions thrown by the emulator on error conditions
@@ -110,6 +110,22 @@ namespace Ocho {
     // Shortcut which returns a memory write exception at the given address.
     static MemoryException bad_write(const Word& address) {
       return MemoryException(OUT_OF_BOUNDS_WRITE, address);
+    }
+  };
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Class: CpuException
+  //
+  // Throws a CPU exception when there is an invalid opcode
+  class CpuException : public Exception{
+  public:
+    CpuException(const Word& opcode, const Word& pc) {
+      std::ostringstream msg;
+      msg << "Invalid opcode 0x";
+      msg << std::setw(4) << std::setfill('0') << std::hex << opcode;
+      msg << " at 0x";
+      msg << std::setw(4) << std::setfill('0') << std::hex << pc;
+      message_ = msg.str();
     }
   };
 }

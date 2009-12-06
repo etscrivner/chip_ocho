@@ -2,11 +2,11 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-05 16:53:12 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 11:28:55 by Eric Scrivner>
 //
 // Description:
 //   Class emulating Chip8 memory
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////// 
 #ifndef MEMORY_H_
 #define MEMORY_H_
 

@@ -2,13 +2,16 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-05 16:11:38 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 12:11:20 by Eric Scrivner>
 //
 // Description:
 //   Type definitions to save typing and be more accurate.
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef TYPES_H__
 #define TYPES_H__
+
+#include <cassert>
+#include <cstring>
 
 namespace Ocho {
   //////////////////////////////////////////////////////////////////////////////
