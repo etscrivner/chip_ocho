@@ -1,14 +1,28 @@
-#ifndef CONSTANTS_H_Y1TH07GJ
-#define CONSTANTS_H_Y1TH07GJ
+////////////////////////////////////////////////////////////////////////////////
+// ChipOcho - A Simple Chip8 Emulator
+// Author: Eric Scrivner
+//
+// Time-stamp: <Last modified 2009-12-05 16:15:10 by Eric Scrivner>
+//
+// Description:
+//   Constants which are referenced throughout the emulator.
+////////////////////////////////////////////////////////////////////////////////
+#ifndef CONSTANTS_H__
+#define CONSTANTS_H__
 
-#include <fstream>
+namespace Ocho {
+  //////////////////////////////////////////////////////////////////////////////
+  // Memory constants
+  const unsigned int MEMORY_SIZE = 0xFFF; // Size in bytes
+  // The offset in memory in bytes at which programs are loaded
+  const unsigned int LOAD_OFFSET = 0x200;
+  // The maximum allowable size of a program in bytes
+  const unsigned int MAX_PROGRAM_SIZE = (MEMORY_SIZE - LOAD_OFFSET);
 
-// ChipOcho Memory Constants
-const unsigned int CHIP_OCHO_MEMORY_SIZE = 0xFFF; // Size of memory in bytes
-const unsigned int CHIP_LOAD_OFFSET = 0x200; 
-	// The offset in bytes at which programs are loaded
-const unsigned int MAX_CHIP_PROGRAM_SIZE = (CHIP_OCHO_MEMORY_SIZE - 
-											CHIP_LOAD_OFFSET);
-	// The maximum allowable size of a program
+  //////////////////////////////////////////////////////////////////////////////
+  // CPU constants
+  const unsigned int NUM_REGS   = 0x0F; // The number of CPU registers
+  const unsigned int STACK_SIZE = 0x30; // Maximum call stack depth
+}
 
-#endif /* end of include guard: CONSTANTS_H_Y1TH07GJ */
+#endif // CONSTANTS_H__

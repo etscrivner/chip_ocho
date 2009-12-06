@@ -1,25 +1,41 @@
-#ifndef LEMON_H_356INNZC
-#define LEMON_H_356INNZC
+////////////////////////////////////////////////////////////////////////////////
+// Lemon Unit Test Framework
+// Author: Eric Scrivner
+//
+// Time-stamp: <Last modified 2009-12-05 17:12:18 by Eric Scrivner>
+//
+// Description:
+//   A very simple unit testing framework
+////////////////////////////////////////////////////////////////////////////////
+#ifndef LEMON_H__
+#define LEMON_H__
 
 #include <string>
 #include <iostream>
 
-class lemon_t
+////////////////////////////////////////////////////////////////////////////////
+// Class: Lemon
+//
+// Class which executes unit tests and displays results
+class Lemon
 {
 public:
-  // Function: lemon_t
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: Lemon
   //
   // Parameters:
   //    num_planned_tests - The total number of tests you plan to execute
   //
   // Initializes the test system for the expected number of tests.
-  lemon_t (unsigned int num_planned_tests);
+  Lemon(unsigned int num_planned_tests);
   
+  //////////////////////////////////////////////////////////////////////////////
   // Function: end
   //
   // Signifies the end of the testing phase and prints the results.
-  void end ();
+  void end();
   
+  //////////////////////////////////////////////////////////////////////////////
   // Function: diag
   //
   // Parameters:
@@ -27,8 +43,9 @@ public:
   //
   // Displays the information with a # in front to signify that it is
   // extra information, not part of the unit test.
-  void diag (const std::string& message);
+  void diag(const std::string& message);
   
+  //////////////////////////////////////////////////////////////////////////////
   // Function: ok
   //
   // Parameters:
@@ -37,8 +54,9 @@ public:
   //
   // Marks this test as passed if pass is true.  The test is marked as
   // failing otherwise.
-  bool ok (bool passed, const std::string& test_name);
+  bool ok(bool passed, const std::string& test_name);
   
+  //////////////////////////////////////////////////////////////////////////////
   // Function: not_ok
   //
   // Parameters:
@@ -47,8 +65,9 @@ public:
   //
   // Marks this test as passed if passed is false. The test is marked as
   // failing otherwise.
-  bool not_ok (bool failed, const std::string& test_name);
-  
+  bool not_ok(bool failed, const std::string& test_name);
+
+  //////////////////////////////////////////////////////////////////////////////
   // Function: is
   //
   // Parameters:
@@ -60,21 +79,22 @@ public:
   // they are equal the test passes, otherwise it fails.
   template<typename type_t>
     bool is (const type_t& this_one,
-	     const type_t& that_one,
-	     const std::string& test_name)
-    {
-      bool passed = (this_one == that_one);
+             const type_t& that_one,
+             const std::string& test_name)
+  {
+    bool passed = (this_one == that_one);
       
-      ok(passed, test_name);
+    ok(passed, test_name);
       
-      if (!passed) {
-	std::cout << "#         got: '" << this_one << "'\n";
-	std::cout << "#    expected: '" << that_one << "'\n";
-      }
-      
-      return passed;
+    if (!passed) {
+      std::cout << "#         got: '" << this_one << "'\n";
+      std::cout << "#    expected: '" << that_one << "'\n";
     }
-  
+      
+    return passed;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
   // Function: isnt
   //
   // Parameters:
@@ -86,22 +106,23 @@ public:
   // they are not equal the test passes, otherwise the test fails.
   template<typename type_t>
     bool isnt (const type_t& this_one,
-	       const type_t& that_one,
-	       const std::string& test_name)
-    {
-      bool passed = (this_one != that_one);
+               const type_t& that_one,
+               const std::string& test_name)
+  {
+    bool passed = (this_one != that_one);
       
-      ok (passed, test_name);
+    ok (passed, test_name);
       
-      if (!passed) {
-	std::cout << "#    '" << this_one << "'\n";
-	std::cout << "#      !=\n";
-	std::cout << "#    '" << that_one << "'\n";
-      }
-      
-      return passed;
+    if (!passed) {
+      std::cout << "#    '" << this_one << "'\n";
+      std::cout << "#      !=\n";
+      std::cout << "#    '" << that_one << "'\n";
     }
-  
+      
+    return passed;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
   // Function: pass
   //
   // Parameters:
@@ -109,7 +130,8 @@ public:
   //
   // Marks the given test as passing without actually testing anything.
   bool pass (const std::string& test_name);
-  
+
+  //////////////////////////////////////////////////////////////////////////////
   // Function: fail
   //
   // Parameters:
@@ -117,7 +139,8 @@ public:
   //
   // Marks the given test as failing without actually testing anything.
   bool fail (const std::string& test_name);
-  
+
+  //////////////////////////////////////////////////////////////////////////////
   // Function: skip
   //
   // Parameters:
@@ -126,7 +149,8 @@ public:
   //
   // Skips the given number of tests adding them to the skip count.
   void skip (const std::string& reason, unsigned int num_to_skip);
-  
+
+  //////////////////////////////////////////////////////////////////////////////
   // Function: todo
   //
   // Parameters:
@@ -141,4 +165,4 @@ private:
   unsigned int num_failed; // The number of tests marked as failing
 };
 
-#endif /* end of include guard: LEMON_H_356INNZC */
+#endif // LEMON_H__

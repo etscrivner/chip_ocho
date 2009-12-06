@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////
+// ChipOcho - A Simple Chip8 Emulator
+// Author: Eric Scrivner
+//
+// Time-stamp: <Last modified 2009-12-05 17:07:14 by Eric Scrivner>
+//
+// Description:
+//   Exceptions thrown by the emulator on error conditions
+////////////////////////////////////////////////////////////////////////////////
 #ifndef EXCEPTIONS_H_D7S3DZIH
 #define EXCEPTIONS_H_D7S3DZIH
 
@@ -5,96 +14,103 @@
 #include <sstream>
 #include <iomanip>
 
-///////////////////////////////////////////////////////////////////////////////
-// exception_t
+#define OCHO_ASSERT(cond, exception) \
+  if (!(cond)) { \
+    throw (exception); \
+  }
 
-class exception_t
-{
-public:
-  // Function: exception_t
+namespace Ocho {
+  ///////////////////////////////////////////////////////////////////////////////
+  // Class: Exception
   //
-  // Initializes the exception with an empty error message
-  exception_t ()
-    : message("")
+  // The base class for all exceptions thrown by the emulator
+  class Exception {
+  public:
+    Exception()
     { }
 	
-  // Function: exception_t
-  //
-  // Parameters:
-  //    msg - A short message describing the error
-  //
-  // Initializes the exception with the given error message
-  exception_t (const std::string& msg)
-    : message(msg)
-  { }
+    Exception(const std::string& msg)
+      : message_(msg)
+    { }
 	
-  // Function: ~exception_t
-  //
-  // Deallocates any resources allocated by this exception
-  virtual ~exception_t () {
-    // do nothing
-  }
-	
-  // Function: get_message
-  //
-  // Returns the message that generated the exception
-  virtual const std::string get_message() const {
-    return message;
-  }
-protected:
-  std::string message; // A message describing the error
-};
+    virtual ~Exception()
+    { }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // Function: get_message
+    //
+    // Returns the message that generated the exception
+    virtual const std::string get_message() const {
+      return message_;
+    }
+  protected:
+    std::string message_; // A message describing the error
+  };
 
-///////////////////////////////////////////////////////////////////////////////
-// memory_exception_t
-
-// Constant: memory_exception_class
-//
-// Classes of memory errors that can be generated
-enum memory_error_type {
-  OUT_OF_BOUNDS_READ,
-  OUT_OF_BOUNDS_WRITE	
-};
-
-class memory_exception_t : public exception_t
-{
-public:
-  // Function: memory_exception_t
+  ///////////////////////////////////////////////////////////////////////////////
+  // Class: MemoryException
   //
-  // Parameters:
-  //    error - The classification of the exception
-  //    address - The address that triggered the error
-  //
-  // Initializes the exception with information about the address and
-  // memory error type.
-  memory_exception_t (const memory_error_type& error_type,
-		      const unsigned int& address)
+  // An exception triggered because of an error condition in memory
+  class MemoryException : public Exception {
+  public:
+    ////////////////////////////////////////////////////////////////////////////
+    // Memory error types
+    enum MemoryErrorT {
+      OUT_OF_BOUNDS_READ,
+      OUT_OF_BOUNDS_WRITE
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Function: MemoryException
+    //
+    // Parameters:
+    //    error - The classification of the exception
+    //    address - The address that triggered the error
+    //
+    // Initializes the exception with information about the address and
+    // memory error type.
+    MemoryException (const MemoryErrorT& error_type,
+                     const Word& address)
     {
       // Determine the type of error that occurred
       std::ostringstream msg_stream;
       
       switch(error_type) {
-	// If the error is an out of bounds read
+        // If the error is an out of bounds read
       case OUT_OF_BOUNDS_READ:
-	{
-	  msg_stream << "memory read failed at address 0x";
-	}
-	break;
-	// If the error is an out of bounds write
+        {
+          msg_stream << "memory read failed at address 0x";
+        }
+        break;
+        // If the error is an out of bounds write
       case OUT_OF_BOUNDS_WRITE:
-	{
-	  msg_stream << "memory write failed at address 0x";
-	}
-	break;
-	// Otherwise
+        {
+          msg_stream << "memory write failed at address 0x";
+        }
+        break;
+        // Otherwise
       default: break;
       }
       
       msg_stream << std::setw(4) << std::setfill('0') << std::hex << address;
-      message = msg_stream.str();
+      message_ = msg_stream.str();
     }
-private:
-  memory_error_type error_type; // The type of memory error
-};
 
+    ////////////////////////////////////////////////////////////////////////////
+    // Function: bad_read
+    //
+    // Shortcut which returns a memory read exception at the given address.
+    static MemoryException bad_read(const Word& address) {
+      return MemoryException(OUT_OF_BOUNDS_READ, address);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Function: bad_write
+    //
+    // Shortcut which returns a memory write exception at the given address.
+    static MemoryException bad_write(const Word& address) {
+      return MemoryException(OUT_OF_BOUNDS_WRITE, address);
+    }
+  };
+}
 #endif /* end of include guard: EXCEPTIONS_H_D7S3DZIH */

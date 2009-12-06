@@ -1,7 +1,16 @@
+////////////////////////////////////////////////////////////////////////////////
+// Lemon Unit Test Framework
+// Author: Eric Scrivner
+//
+// Time-stamp: <Last modified 2009-12-05 17:13:27 by Eric Scrivner>
+//
+// Description:
+//   A very simple unit testing framework
+////////////////////////////////////////////////////////////////////////////////
 #include "lemon.h"
 using namespace std;
 
-lemon_t::lemon_t(unsigned int num_planned_tests)
+Lemon::Lemon(unsigned int num_planned_tests)
   : num_tests(0),
     test_number(0),
     num_skipped(0),
@@ -12,7 +21,7 @@ lemon_t::lemon_t(unsigned int num_planned_tests)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void lemon_t::end() {
+void Lemon::end() {
   // If any tests were skipped
   if (num_skipped > 0) {
     // Display information about the skipped tests
@@ -33,13 +42,13 @@ void lemon_t::end() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void lemon_t::diag(const std::string& message) {
+void Lemon::diag(const std::string& message) {
   cout << "# " << message << "\n";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool lemon_t::ok(bool passed, const std::string& test_name) {
+bool Lemon::ok(bool passed, const std::string& test_name) {
   // Increment the number of tests run
   num_tests++;
   
@@ -67,25 +76,25 @@ bool lemon_t::ok(bool passed, const std::string& test_name) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool lemon_t::not_ok(bool failed, const std::string& test_name) {
+bool Lemon::not_ok(bool failed, const std::string& test_name) {
   return ok(!failed, test_name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool lemon_t::pass(const std::string& test_name) {
+bool Lemon::pass(const std::string& test_name) {
   return ok(true, test_name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool lemon_t::fail(const std::string& test_name) {
+bool Lemon::fail(const std::string& test_name) {
   return ok(false, test_name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void lemon_t::skip(const std::string& reason, unsigned int num_to_skip) {
+void Lemon::skip(const std::string& reason, unsigned int num_to_skip) {
   num_skipped += num_to_skip;
   
   for (unsigned int i = 0; i < num_to_skip; i++) {
@@ -95,7 +104,7 @@ void lemon_t::skip(const std::string& reason, unsigned int num_to_skip) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void lemon_t::todo(const std::string& what) {
+void Lemon::todo(const std::string& what) {
   num_skipped++;
   
   pass("# TODO " + what);

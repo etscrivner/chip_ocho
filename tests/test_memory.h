@@ -1,5 +1,14 @@
-#ifndef TEST_MEMORY_H_KOSKNSB1
-#define TEST_MEMORY_H_KOSKNSB1
+////////////////////////////////////////////////////////////////////////////////
+// ChipOcho - A Simple Chip8 Emulator
+// Author: Eric Scrivner
+//
+// Time-stamp: <Last modified 2009-12-05 17:14:47 by Eric Scrivner>
+//
+// Description:
+//   Memory test suite
+////////////////////////////////////////////////////////////////////////////////
+#ifndef TEST_MEMORY_H__
+#define TEST_MEMORY_H__
 
 #include "lemon.h"
 #include "../memory.h"
@@ -7,12 +16,12 @@
 
 void memory_test_suite() {
   // Test Suite
-  lemon_t lemon(8);
-  memory_t memory;
+  Lemon lemon(8);
+  Ocho::Memory memory;
   
   // Test 1: Memory is initialized to all zeros
   bool is_zero = true;
-  for (unsigned int i = 0; i < CHIP_OCHO_MEMORY_SIZE; i++) {
+  for (unsigned int i = 0; i < Ocho::MEMORY_SIZE; i++) {
     if (memory.read(i) != 0) {
       is_zero = false;
     }
@@ -28,7 +37,7 @@ void memory_test_suite() {
   try {
     memory.read(0xFFF);
     lemon.fail("Memory won't let you read out of bounds.");
-  } catch (memory_exception_t& e) {
+  } catch (Ocho::MemoryException& e) {
     lemon.pass("Memory won't let you read out of bounds.");
   }
   
@@ -36,7 +45,7 @@ void memory_test_suite() {
   try {
     memory.write(0xFFF, 0xFF);
     lemon.fail("Memory won't let you write out bounds.");
-  } catch(memory_exception_t& e) {
+  } catch(Ocho::MemoryException& e) {
     lemon.pass("Memory won't let you write out bounds.");
   }
   
@@ -50,17 +59,17 @@ void memory_test_suite() {
   
   // Test 7: Memory loads data at the appropriate offset
   memory.load("tests/fixtures/memory_test_data");
-  lemon.ok(std::string((char*)&memory.read(CHIP_LOAD_OFFSET)) == "TEST",
+  lemon.ok(std::string((char*)memory.read_ptr(Ocho::LOAD_OFFSET)) == "TEST",
 	   "Memory loads data at the right offset.");
   
   // Test 8: You can read two bytes from memory at once
   memory.write(0x300, 0xBE); // My Intel is little-endian
   memory.write(0x301, 0xEF);
-  lemon.is<two_bytes>(memory.read_two_bytes(0x300), 0xBEEF,
+  lemon.is<Ocho::Word>(memory.read_word(0x300), 0xBEEF,
 		      "You can read two bytes from memory.");	
 				
   // ~Test Suite
   lemon.end();
 }
 
-#endif /* end of include guard: TEST_MEMORY_H_KOSKNSB1 */
+#endif // TEST_MEMORY_H__
