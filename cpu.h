@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 12:11:09 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 12:44:49 by Eric Scrivner>
 //
 // Description:
 //   Class which emulates the Chip8 CPU.
@@ -68,6 +68,18 @@ namespace Ocho {
     void skipeqi(); // Skip next instruction if VX == KK
     void skipnei();  // Skip next instruction if VX != KK
     void skipeq(); // Skip next instruction if VX == VY
+    void seti(); // VX = KK
+    void addi(); // VX += KK
+    void set(); // VX = VY
+    void orr(); // VX = VX or VY
+    void andr(); // VX = VX and VY
+    void xorr(); // VX = VX xor VY
+    void addc(); // VX += VY, VF = carry
+    void subb(); // VX -= VY, VF = not borrow
+    void shr(); // VX >>= 1, VF = carry
+    void subf(); // VX = VY - VX, VF = not borrow
+    void shl(); // VX <<= 1, VF = carry
+    void skipne(); // Skip next instruction if VX != VY
 
     Word pc_; // Program counter
     Word i_; // The address register

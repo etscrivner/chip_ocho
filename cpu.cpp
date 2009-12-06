@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 12:14:46 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 12:45:31 by Eric Scrivner>
 //
 // Description:
 //   Class which emulates the Chip8 CPU.
@@ -14,6 +14,7 @@
 
 #define VX (v_[((opcode_ >> 8) & 0xF)])
 #define VY (v_[((opcode_ >> 4) & 0xF)])
+#define VF v_[0xF]
 #define KK (opcode_ & 0xFF)
 #define NNN (opcode_ & 0xFFF)
  
@@ -35,12 +36,30 @@ void Ocho::Cpu::runNext() {
 		default: throw CpuException(opcode_, pc_);
 		}
 	}
-	case 1000: jump(); break;
-	case 2000: call(); break;
-	case 3000: skipeqi(); break;
-	case 4000: skipnei(); break;
-	case 5000: skipeq(); break;
 	break;
+	case 0x1000: jump(); break;
+	case 0x2000: call(); break;
+	case 0x3000: skipeqi(); break;
+	case 0x4000: skipnei(); break;
+	case 0x5000: skipeq(); break;
+	case 0x6000: seti(); break;
+	case 0x7000: addi(); break;
+	case 0x8000: {
+		switch(opcode_ & 0xF) {
+		case 0x0: set(); break;
+		case 0x1: orr(); break;
+		case 0x2: andr(); break;
+		case 0x3: xorr(); break;
+		case 0x4: addc(); break;
+		case 0x5: subb(); break;
+		case 0x6: shr(); break;
+		case 0x7: subf(); break;
+		case 0xE: shl(); break;
+		default: throw CpuException(opcode_, pc_);
+		}
+	}
+	break;
+	case 0x9000: skipne(); break;
 	default: throw CpuException(opcode_, pc_);
 	}
 }
@@ -91,6 +110,100 @@ void Ocho::Cpu::skipnei() {
 
 void Ocho::Cpu::skipeq() {
 	if (VX == VY) {
+		pc_ += 2;
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::seti() {
+	VX = KK;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::addi() {
+	VX += KK;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::set() {
+	VX = VY;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::orr() {
+	VX |= VY;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::andr() {
+	VX &= VY;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::xorr() {
+	VX ^= VY;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::addc() {
+	if (((Word)VX) + VY > 0xFF) {
+		VF = 1;
+	} else {
+		VF = 0;
+	}
+
+	VX += VY;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::subb() {
+	if (VX >= VY) {
+		VF = 1;
+	} else {
+		VF = 0;
+	}
+
+	VX -= VY;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::shr() {
+	VF = VX & 0x01;
+	VX >>= 1;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::subf() {
+	if (VY >= VX) {
+		VF = 1;
+	} else {
+		VF = 0;
+	}
+
+	VX = VY - VX;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::shl() {
+	VF = (VX >> 7) & 0x1;
+	VF <<= 1;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Ocho::Cpu::skipne() {
+	if (VX != VY) {
 		pc_ += 2;
 	}
 }
