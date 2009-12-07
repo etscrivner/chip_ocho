@@ -5,36 +5,54 @@
 
 namespace Ocho {
   //////////////////////////////////////////////////////////////////////////////
-  // Keyboard constants
-  const unsigned int QUEUE_SIZE = 5;
-
-  //////////////////////////////////////////////////////////////////////////////
   // Class: Input
   //
   // Emulates Chip8 keyboard input
   class Input {
   public:
     Input()
-      : front_(-1), back_(-1)
-    { }
+      : lastKey_(NUM_KEYS)
+    {
+      memset(keys_, false, sizeof(bool) * NUM_KEYS);
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Function: mapKey
     //
     // Maps the given keyboard key to the given Chip8 key
     void mapKey(const Byte& chipKey, const int& keyboardKey) {
+      assert(chipKey < NUM_KEYS);
       keyMap_[chipKey] = keyboardKey;
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Function: addKey
+    // Function: setKey
     //
-    // Adds the given key to the keypress queue if it is a mapped key
-    void addKey(const int& key) {
+    // Activates a key press for the given key
+    void setKey(const int& key) {
       if (_isMapped(key)) {
-        back_ = (back_ + 1) % QUEUE_SIZE;
-        keyQueue_[back_] = _chipKey(key);
+        lastKey_ = _chipKey(key);
+        keys_[lastKey_] = true;
       }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Function: clearKey
+    //
+    // Deactivates a key press for the given key
+    void clearKey(const int& key) {
+      if (_isMapped(key)) {
+        keys_[_chipKey(key)] = false;
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Function: isPressed
+    //
+    // Indicates whether or not the given Chip8 key is pressed
+    bool isPressed(const Byte& chipKey) {
+      assert(chipKey < NUM_KEYS);
+      return keys_[chipKey];
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -42,8 +60,9 @@ namespace Ocho {
     //
     // Gets the key with highest priority in the queue
     Byte getLastKey() {
-      front_ = (front_ + 1) % QUEUE_SIZE;
-      return keyQueue_[front_];
+      Byte tmp = lastKey_;
+      lastKey_ = NUM_KEYS;
+      return tmp;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -51,7 +70,7 @@ namespace Ocho {
     //
     // Returns true if there is pending keyboard input, false otherwise
     bool hasKey() const {
-      return (front_ != back_);
+      return (lastKey_ != NUM_KEYS);
     }
   private:
     ////////////////////////////////////////////////////////////////////////////
@@ -83,9 +102,8 @@ namespace Ocho {
     }
 
     std::map<Byte, int> keyMap_; // Maps Chip8 keys to keyboard keys
-    Byte keyQueue_[QUEUE_SIZE]; // Stores the 5 most recently pressed keys
-    int front_; // The front queue index
-    int back_; // The back queue index
+    bool keys_[NUM_KEYS]; // Boolean map indicating which keys are pressed
+    Byte lastKey_; // The most recent key pressed;
   };
 }
 

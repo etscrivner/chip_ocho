@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 17:56:30 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 20:14:23 by Eric Scrivner>
 //
 // Description:
 //   Class which emulates the Chip8 CPU.
@@ -46,7 +46,6 @@ void Ocho::Cpu::runNext() {
 	// Increment the program counter
 	pc_ += 2;
 
-	//std::cout << std::hex << opcode_ << std::endl;
 	// Decode the opcode
 	switch(opcode_ & 0xF000) {
 	case 0x0000: {
@@ -280,8 +279,8 @@ void Ocho::Cpu::drw() {
 	size_t width  = 1;
 	size_t height = N;
 	if (N == 0) {
-		width = 2;
-		height = 16;
+		//width = 2;
+		//height = 16;
 	}
 
 	bool wasCollision = false;
@@ -291,7 +290,7 @@ void Ocho::Cpu::drw() {
 		// and each horizontal pixel..
 		for (size_t x = 0; x < width; x++) {
 			// Plot the next chunk of 8 horizontal pixels
-			if (video_->plot(VX + (x * 8), VY + y, memory_->read(I + (y * width) + x))) {
+			if (video_->plot(VX, VY + y, memory_->read(I + y))) {
 				wasCollision = true;
 			}
 		}
@@ -304,7 +303,7 @@ void Ocho::Cpu::drw() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::skp() {
-	if (input_->getLastKey() == VX) {
+	if (input_->isPressed(VX)) {
 		pc_ += 2;
 	}
 }
@@ -312,7 +311,7 @@ void Ocho::Cpu::skp() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::sknp() {
-	if (input_->getLastKey() != VX) {
+	if (input_->isPressed(VX)) {
 		pc_ += 2;
 	}
 }

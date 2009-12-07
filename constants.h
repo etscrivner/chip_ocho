@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 12:09:39 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 20:12:12 by Eric Scrivner>
 //
 // Description:
 //   Constants which are referenced throughout the emulator.
@@ -28,6 +28,10 @@ namespace Ocho {
   // Video constants
   const unsigned int VIDEO_WIDTH  = 64; // The width of the video screen
   const unsigned int VIDEO_HEIGHT = 32; // The height of the video screen
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Input constants
+  const unsigned int NUM_KEYS = 0x10; // The number of Chip8 keys
 }
 
 #endif // CONSTANTS_H__

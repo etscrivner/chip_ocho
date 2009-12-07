@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 15:14:10 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 19:43:31 by Eric Scrivner>
 //
 // Description:
 //   Class emulating the Chip8 video system.
@@ -91,6 +91,12 @@ namespace Ocho {
     // a collision, false otherwise.
     bool plot(const size_t& x, const size_t& y, const Byte& value);
   private:
+    ////////////////////////////////////////////////////////////////////////////
+    // Function: _drawQuad
+    //
+    // Draws a rectangle given an upper left and lower right corner
+    void _drawQuad(int x1, int y1, int x2, int y2);
+      
     unsigned int pixelSize_; // The size of a single pixel
     Color background_; // The background color
     Color foreground_; // The pixel color
