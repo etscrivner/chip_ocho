@@ -2,13 +2,16 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-05 18:52:06 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 16:48:59 by Eric Scrivner>
 //
 // Description:
 //   Application entry point.
 ////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include "cpu.h"
 #include "memory.h"
+#include "timers.h"
+#include "video.h"
 using namespace std;
 
 // OpenGL includes
@@ -22,14 +25,17 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
-unsigned int kWindowWidth  = 256;
-unsigned int kWindowHeight = 128;
+unsigned int kMultiplier   = 3;
+unsigned int kWindowWidth  = Ocho::VIDEO_WIDTH * kMultiplier;
+unsigned int kWindowHeight = Ocho::VIDEO_HEIGHT * kMultiplier;
 const char*  kWindowTitle  = "ChipOcho";
 
-const int kXMax = (kWindowWidth / 2);
-const int kYMax = (kWindowHeight / 2);
-const int kXMin = -kXMax;
-const int kYMin = -kYMax;
+////////////////////////////////////////////////////////////////////////////////
+// Components
+Ocho::Memory gMemory;
+Ocho::Timers gTimers;
+Ocho::Video  gVideo(kMultiplier);
+Ocho::Cpu    gCpu(&gMemory, &gVideo, &gTimers);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Function: Redraw
@@ -39,7 +45,8 @@ void Redraw() {
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT);
 
-	// Draw here..
+	// Redraw the Chip8 display
+	gVideo.redraw();
 
   // Swap the redraw buffer onto the screen
   glutSwapBuffers();
@@ -59,8 +66,7 @@ void Reshape(int width, int height) {
   glMatrixMode(GL_PROJECTION);
 
   glLoadIdentity();
-  gluOrtho2D(kXMin, kXMax,
-             kYMin, kYMax);
+	gluOrtho2D(0, kWindowWidth, 0, kWindowHeight);
 
   glMatrixMode(GL_MODELVIEW);
 }
@@ -85,7 +91,12 @@ void OnKeyPress(unsigned char key, int, int) {
 //
 // Handles the idle loop updating of the simulation components
 void Update() {
-  // Do nothing...
+	// Update the CPU and timers
+	gCpu.runNext();
+	gTimers.update();
+
+	// Redraw the display
+	glutPostRedisplay();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -108,6 +119,7 @@ void InitGlut(int& argc, char* argv[]) {
 }
 
 int main (int argc, char* argv[]) {
+	gMemory.load("./roms/INVADERS");
 	InitGlut(argc, argv);
 	glutMainLoop();
   return 0;

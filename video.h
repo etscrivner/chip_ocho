@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 12:08:52 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 15:14:10 by Eric Scrivner>
 //
 // Description:
 //   Class emulating the Chip8 video system.
@@ -68,10 +68,28 @@ namespace Ocho {
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    // Function: redraw
+    //
+    // Draws the current video memory onto the screen
+    void redraw();
+
+    ////////////////////////////////////////////////////////////////////////////
     // Function: clear_screen
     //
     // Clears the screen to the color black
     void clear_screen();
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Function: plot
+    //
+    // Parameters:
+    //   x - The x coordinate to be plotted
+    //   y - The y coordinate to be plotted
+    //   value - The pixel value to plot at that point
+    //
+    // Plots the given value at the given point and returns true if there was
+    // a collision, false otherwise.
+    bool plot(const size_t& x, const size_t& y, const Byte& value);
   private:
     unsigned int pixelSize_; // The size of a single pixel
     Color background_; // The background color
