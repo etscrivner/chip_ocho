@@ -2,16 +2,20 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 16:48:59 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 17:59:05 by Eric Scrivner>
 //
 // Description:
 //   Application entry point.
 ////////////////////////////////////////////////////////////////////////////////
-#include <iostream>
 #include "cpu.h"
+#include "input.h"
 #include "memory.h"
 #include "timers.h"
 #include "video.h"
+
+#include <sys/time.h>
+#include <ctime>
+#include <iostream>
 using namespace std;
 
 // OpenGL includes
@@ -30,12 +34,17 @@ unsigned int kWindowWidth  = Ocho::VIDEO_WIDTH * kMultiplier;
 unsigned int kWindowHeight = Ocho::VIDEO_HEIGHT * kMultiplier;
 const char*  kWindowTitle  = "ChipOcho";
 
+int timerFreq  = 167; // 60 Hz
+int cpuFreq    = 333; // 30 Hz
+timeval lastCountDown, lastCycle;
+
 ////////////////////////////////////////////////////////////////////////////////
 // Components
 Ocho::Memory gMemory;
+Ocho::Input  gInput;
 Ocho::Timers gTimers;
 Ocho::Video  gVideo(kMultiplier);
-Ocho::Cpu    gCpu(&gMemory, &gVideo, &gTimers);
+Ocho::Cpu    gCpu(&gInput, &gMemory, &gVideo, &gTimers);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Function: Redraw
@@ -80,23 +89,29 @@ void OnKeyPress(unsigned char key, int, int) {
   case 27: // Exit (ESC)
     exit(0);
     break;
-  default: break;
+  default: gInput.addKey(key); break;
   }
 
   glutPostRedisplay();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Function: Update
+// Function: UpdateCpu
 //
-// Handles the idle loop updating of the simulation components
-void Update() {
-	// Update the CPU and timers
+// Executes the next CPU instruction
+void UpdateCpu(int) {
+	cout << "cpu" << endl;
 	gCpu.runNext();
-	gTimers.update();
+	//glutPostRedisplay();
+}
 
-	// Redraw the display
-	glutPostRedisplay();
+////////////////////////////////////////////////////////////////////////////////
+// Function: UpdateTimers
+//
+// Updates the Chip8 timers
+void UpdateTimers(int) {
+	cout << "timr" << endl;
+	gTimers.update();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -115,11 +130,42 @@ void InitGlut(int& argc, char* argv[]) {
   glutDisplayFunc(Redraw);
   glutReshapeFunc(Reshape);
   glutKeyboardFunc(OnKeyPress);
-  glutIdleFunc(Update);
+	glutTimerFunc(0, UpdateTimers, 0);
+	glutTimerFunc(0, UpdateCpu, 0);
 }
 
 int main (int argc, char* argv[]) {
-	gMemory.load("./roms/INVADERS");
+	if (argc < 2) {
+		cout << "Usage: chip_ocho [rom]" << endl;
+		return 1;
+	}
+	
+	// Load a rom
+	if (!gMemory.load(argv[1])) {
+		cout << "Error, unable to load rom '" << argv[1] << "'\n";
+		return 1;
+	}
+
+	// Map keybaord input
+	gInput.mapKey(0x1, 'q');
+	gInput.mapKey(0x2, 'w');
+	gInput.mapKey(0x3, 'e');
+	gInput.mapKey(0xC, 'r');
+	gInput.mapKey(0x4, 'a');
+	gInput.mapKey(0x5, 's');
+	gInput.mapKey(0x6, 'd');
+	gInput.mapKey(0xD, 'f');
+	gInput.mapKey(0x7, 'z');
+	gInput.mapKey(0x8, 'x');
+	gInput.mapKey(0x9, 'c');
+	gInput.mapKey(0xA, '1');
+	gInput.mapKey(0x0, '2');
+	gInput.mapKey(0xB, '3');
+	gInput.mapKey(0xF, '4');
+
+	gettimeofday(&lastCountDown, 0);
+	gettimeofday(&lastCycle, 0);
+
 	InitGlut(argc, argv);
 	glutMainLoop();
   return 0;

@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 16:15:34 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 17:24:23 by Eric Scrivner>
 //
 // Description:
 //   Class which emulates the Chip8 CPU.
@@ -16,6 +16,7 @@
 namespace Ocho {
   //////////////////////////////////////////////////////////////////////////////
   // Forward definitions
+  class Input;
   class Memory;
   class Timers;
   class Video;
@@ -27,9 +28,9 @@ namespace Ocho {
   // instructions stored there.
   class Cpu {
   public:
-    Cpu(Memory* memory, Video* video, Timers* timers)
-      : pc_(LOAD_OFFSET), i_(0), opcode_(0), stack_ptr_(0),
-        memory_(memory), video_(video), timers_(timers) {
+    Cpu(Input* input, Memory* memory, Video* video, Timers* timers)
+      : pc_(LOAD_OFFSET), i_(0), opcode_(0), stackPtr_(0), waitingForKey_(false),
+        input_(input), memory_(memory), video_(video), timers_(timers) {
       memset(v_, 0, sizeof(Byte) * NUM_REGS);
     }
 
@@ -44,21 +45,21 @@ namespace Ocho {
     //
     // Pushes the given address onto the call stack
     void push(const Word& address) {
-      assert(stack_ptr_ < STACK_DEPTH);
-      stack_[stack_ptr_++] = address;
+      assert(stackPtr_ < STACK_DEPTH);
+      stack_[stackPtr_++] = address;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Function: top
     //
     // Returns the value at the top of the call stack
-    Word top() { assert(stack_ptr_ > 0); return stack_[stack_ptr_ - 1]; }
+    Word top() { assert(stackPtr_ > 0); return stack_[stackPtr_ - 1]; }
 
     ////////////////////////////////////////////////////////////////////////////
     // Function: pop
     //
     // Pops the value off the top of the stack
-    void pop() { assert(stack_ptr_ > 0); stack_ptr_--; }
+    void pop() { assert(stackPtr_ > 0); stackPtr_--; }
 
     ////////////////////////////////////////////////////////////////////////////
     // Opcodes
@@ -103,8 +104,10 @@ namespace Ocho {
     Byte v_[NUM_REGS];          // The registers
     Word opcode_;               // The current opcode
     Word stack_[STACK_DEPTH];   // The call stack
-    Word stack_ptr_;            // The current stack index
+    Word stackPtr_;            // The current stack index
+    bool waitingForKey_;        // Indicates that VX should be assigned next key
     
+    Input*  input_; // The input object
     Memory* memory_; // The memory object used by the CPU
     Video*  video_;  // The video object used by the CPU
     Timers* timers_; // The timers

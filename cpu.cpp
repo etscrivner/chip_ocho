@@ -2,13 +2,14 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 16:40:03 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 17:56:30 by Eric Scrivner>
 //
 // Description:
 //   Class which emulates the Chip8 CPU.
 ////////////////////////////////////////////////////////////////////////////////
 #include "cpu.h"
 #include "exceptions.h"
+#include "input.h"
 #include "memory.h"
 #include "timers.h"
 #include "video.h"
@@ -30,6 +31,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::runNext() {
+	// If we're waiting for a key press then
+	if (waitingForKey_) {
+		if (input_->hasKey()) {
+			VX = input_->getLastKey();
+			waitingForKey_ = false;
+		}
+		return;
+	}
+
 	// Fetch the next opcode from memory
 	opcode_ = memory_->read_word(pc_);
 
@@ -117,7 +127,7 @@ void Ocho::Cpu::ret() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::jp() {
-	pc_ = NNN + 2;
+	pc_ = NNN;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -294,11 +304,17 @@ void Ocho::Cpu::drw() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::skp() {
+	if (input_->getLastKey() == VX) {
+		pc_ += 2;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::sknp() {
+	if (input_->getLastKey() != VX) {
+		pc_ += 2;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -310,6 +326,7 @@ void Ocho::Cpu::ldrd() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::ldrk() {
+	waitingForKey_ = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

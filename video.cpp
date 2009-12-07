@@ -2,14 +2,12 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 16:50:59 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 17:11:23 by Eric Scrivner>
 //
 // Description:
 //   Class emulating the Chip8 video system.
 //////////////////////////////////////////////////////////////////////////////// 
 #include "video.h"
-
-#include <iostream>
 
 #include <cstring>
 
