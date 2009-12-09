@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 20:14:23 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 21:21:00 by Eric Scrivner>
 //
 // Description:
 //   Class which emulates the Chip8 CPU.
@@ -36,8 +36,9 @@ void Ocho::Cpu::runNext() {
 		if (input_->hasKey()) {
 			VX = input_->getLastKey();
 			waitingForKey_ = false;
+		} else {
+			return;
 		}
-		return;
 	}
 
 	// Fetch the next opcode from memory
@@ -199,19 +200,14 @@ void Ocho::Cpu::xorrr() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::addrr() {
-	if (((Word)VX) + VY > 0xFF) {
-		VF = 1;
-	} else {
-		VF = 0;
-	}
-
+	VF = ((Word)VX + (Word)VY) >> 8;
 	VX += VY;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::sub() {
-	if (VX >= VY) {
+	if (VY >= VX) {
 		VF = 1;
 	} else {
 		VF = 0;
@@ -242,7 +238,7 @@ void Ocho::Cpu::subn() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::shl() {
-	VF = (VX >> 7) & 0x1;
+	VF = VX & 0x80;
 	VF <<= 1;
 }
 
@@ -279,8 +275,8 @@ void Ocho::Cpu::drw() {
 	size_t width  = 1;
 	size_t height = N;
 	if (N == 0) {
-		//width = 2;
-		//height = 16;
+		width = 2;
+		height = 16;
 	}
 
 	bool wasCollision = false;
@@ -349,18 +345,15 @@ void Ocho::Cpu::addi() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::ldf() {
-	I = VX * 5;
+	I = ((Word)VX * 5);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void Ocho::Cpu::bcd() {
-	Byte tmp = VX;
-	memory_->write(I, tmp % 10);
-	tmp /= 10;
-	memory_->write(I + 1, tmp % 10);
-	tmp /= 10;
-	memory_->write(I + 2, tmp % 10);
+	memory_->write(I + 2, VX % 10);
+	memory_->write(I + 1, (VX / 100) % 10);
+	memory_->write(I, VX / 100);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

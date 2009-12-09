@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 15:39:54 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-09 12:35:29 by Eric Scrivner>
 //
 // Description:
 //   Class which emulates the Chip8 timers

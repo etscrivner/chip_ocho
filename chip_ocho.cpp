@@ -2,7 +2,7 @@
 // ChipOcho - A Simple Chip8 Emulator
 // Author: Eric Scrivner
 //
-// Time-stamp: <Last modified 2009-12-06 20:24:56 by Eric Scrivner>
+// Time-stamp: <Last modified 2009-12-06 21:09:41 by Eric Scrivner>
 //
 // Description:
 //   Application entry point.
@@ -96,8 +96,9 @@ void PollInput() {
 			case SDLK_ESCAPE: // Escape key
 				gQuit = true;
 				break;
-			default: gInput.clearKey(keyEvent.key.keysym.sym); break;
+			default: break;
 			}
+			gInput.clearKey(keyEvent.key.keysym.sym);
 			break;
 		case SDL_QUIT:
 			gQuit = true;
